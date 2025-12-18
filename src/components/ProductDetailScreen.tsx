@@ -107,7 +107,8 @@ const ProductDetailScreen = ({
 
   return (
     <div className="product-detail-screen">
-      <section className="extras-panel">
+      <div className="product-detail-content">
+        <section className="extras-panel">
         <div className="extras-card">
           <div className="extras-card-navbar">
             <md-filled-tonal-button className="back-btn" aria-label="Voltar" onClick={onBack}>
@@ -232,6 +233,7 @@ const ProductDetailScreen = ({
           </div>
         </div>
       </aside>
+      </div>
 
       {/* Dialog de observação */}
       {isObservationDialogOpen && (
