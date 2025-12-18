@@ -16,6 +16,7 @@ type MenuSection = {
 
 type CartItem = MenuItem & {
   quantity: number
+  lineId?: string
 }
 
 const MENU_SECTIONS: MenuSection[] = [
@@ -101,14 +102,35 @@ const MENU_SECTIONS: MenuSection[] = [
   },
 ]
 
-const MenuScreen = () => {
-  const [cart, setCart] = useState<CartItem[]>([])
+type MenuScreenProps = {
+  onProductClick?: (item: MenuItem) => void
+  cartItems?: CartItem[]
+  onQuickAdd?: (item: MenuItem) => void
+  onRemoveFromCart?: (itemId: string) => void
+  onClearCart?: () => void
+  onCheckoutCart?: () => void
+}
+
+const MenuScreen = ({
+  onProductClick,
+  cartItems,
+  onQuickAdd,
+  onRemoveFromCart,
+  onClearCart,
+  onCheckoutCart,
+}: MenuScreenProps) => {
+  const [localCart, setLocalCart] = useState<CartItem[]>([])
   const [activeTab, setActiveTab] = useState<string>('lanches')
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({})
   const menuPanelsRef = useRef<HTMLDivElement | null>(null)
+  const cart = cartItems ?? localCart
 
   const addToCart = (item: MenuItem) => {
-    setCart((prevCart) => {
+    if (onQuickAdd) {
+      onQuickAdd(item)
+      return
+    }
+    setLocalCart((prevCart) => {
       const existingItem = prevCart.find((cartItem) => cartItem.id === item.id)
       if (existingItem) {
         return prevCart.map((cartItem) =>
@@ -122,11 +144,21 @@ const MenuScreen = () => {
   }
 
   const removeFromCart = (itemId: string) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== itemId))
+    if (onRemoveFromCart) {
+      onRemoveFromCart(itemId)
+      return
+    }
+    setLocalCart((prevCart) =>
+      prevCart.filter((item) => (item.lineId ?? item.id) !== itemId)
+    )
   }
 
   const clearCart = () => {
-    setCart([])
+    if (onClearCart) {
+      onClearCart()
+      return
+    }
+    setLocalCart([])
   }
 
   const formatPrice = (price: number) => {
@@ -211,7 +243,7 @@ const MenuScreen = () => {
                     <md-elevated-card
                       key={item.id}
                       className="menu-card"
-                      onClick={() => addToCart(item)}
+                      onClick={() => onProductClick ? onProductClick(item) : addToCart(item)}
                     >
                       <div className="menu-info">
                         <strong>{item.title}</strong>
@@ -266,30 +298,33 @@ const MenuScreen = () => {
               <p className="empty-subtitle">Adicione itens do cardápio</p>
             </div>
           ) : (
-            cart.map((item) => (
-              <md-elevated-card key={item.id} className="cart-item">
-                <button
-                  className="remove-item-btn"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    removeFromCart(item.id)
-                  }}
-                  title="Remover item"
-                >
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path
-                      d="M8 2C7.44772 2 7 2.44772 7 3V4H4C3.44772 4 3 4.44772 3 5C3 5.55228 3.44772 6 4 6H5V16C5 17.1046 5.89543 18 7 18H13C14.1046 18 15 17.1046 15 16V6H16C16.5523 6 17 5.55228 17 5C17 4.44772 16.5523 4 16 4H13V3C13 2.44772 12.5523 2 12 2H8ZM9 8C9 7.44772 8.55228 7 8 7C7.44772 7 7 7.44772 7 8V14C7 14.5523 7.44772 15 8 15C8.55228 15 9 14.5523 9 14V8ZM12 7C12.5523 7 13 7.44772 13 8V14C13 14.5523 12.5523 15 12 15C11.4477 15 11 14.5523 11 14V8C11 7.44772 11.4477 7 12 7Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </button>
-                <div className="cart-item-info">
-                  <strong>{item.quantity}x {item.title}</strong>
-                  <p>{item.description}</p>
-                  <span className="price">{formatPrice(item.price * item.quantity)}</span>
-                </div>
-              </md-elevated-card>
-            ))
+            cart.map((item) => {
+              const identifier = item.lineId ?? item.id
+              return (
+                <md-elevated-card key={identifier} className="cart-item">
+                  <button
+                    className="remove-item-btn"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      removeFromCart(identifier)
+                    }}
+                    title="Remover item"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path
+                        d="M8 2C7.44772 2 7 2.44772 7 3V4H4C3.44772 4 3 4.44772 3 5C3 5.55228 3.44772 6 4 6H5V16C5 17.1046 5.89543 18 7 18H13C14.1046 18 15 17.1046 15 16V6H16C16.5523 6 17 5.55228 17 5C17 4.44772 16.5523 4 16 4H13V3C13 2.44772 12.5523 2 12 2H8ZM9 8C9 7.44772 8.55228 7 8 7C7.44772 7 7 7.44772 7 8V14C7 14.5523 7.44772 15 8 15C8.55228 15 9 14.5523 9 14V8ZM12 7C12.5523 7 13 7.44772 13 8V14C13 14.5523 12.5523 15 12 15C11.4477 15 11 14.5523 11 14V8C11 7.44772 11.4477 7 12 7Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </button>
+                  <div className="cart-item-info">
+                    <strong>{item.quantity}x {item.title}</strong>
+                    <p>{item.description}</p>
+                    <span className="price">{formatPrice(item.price * item.quantity)}</span>
+                  </div>
+                </md-elevated-card>
+              )
+            })
           )}
         </div>
         <div className="cart-footer">
@@ -297,8 +332,17 @@ const MenuScreen = () => {
             <span>Total</span>
             <strong className="total-price">{formatPrice(getTotal())}</strong>
           </div>
-          <md-filled-button className="confirm-btn" disabled={cart.length === 0}>
-            Continuar para pagamento
+          <md-filled-button
+            className="confirm-btn"
+            disabled={cart.length === 0}
+            onClick={() => {
+              if (cart.length === 0) return
+              if (onCheckoutCart) {
+                onCheckoutCart()
+              }
+            }}
+          >
+            Finalizar
           </md-filled-button>
         </div>
       </aside>
