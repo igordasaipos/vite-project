@@ -63,7 +63,7 @@ const CheckoutScreen = ({
               type="text"
               placeholder="Digite seu nome"
               value={customerName}
-              onInput={(e: Event) => {
+              onInput={(e: React.FormEvent<HTMLElement>) => {
                 const target = e.target as HTMLInputElement
                 setCustomerName(target.value)
               }}

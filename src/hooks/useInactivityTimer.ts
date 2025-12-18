@@ -6,7 +6,7 @@ const INACTIVITY_TIMEOUT = 60000 // 60 seconds
 export const useInactivityTimer = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const resetTimer = () => {
     if (timeoutRef.current) {

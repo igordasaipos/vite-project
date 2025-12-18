@@ -4,7 +4,7 @@ import CartReviewScreen, { type CartReviewItem } from '../components/CartReviewS
 
 const CartReviewPage = () => {
   const navigate = useNavigate()
-  const { cart, removeFromCart, getCartTotal } = useCart()
+  const { cart, removeFromCart } = useCart()
 
   const cartReviewItems: CartReviewItem[] = cart.map((item) => ({
     id: item.lineId,

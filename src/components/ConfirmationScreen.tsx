@@ -139,7 +139,7 @@ const ConfirmationScreen = ({
               type="tel"
               placeholder="(00) 00000-0000"
               value={phoneNumber}
-              onInput={(e: Event) => {
+              onInput={(e: React.FormEvent<HTMLElement>) => {
                 const target = e.target as HTMLInputElement
                 setPhoneNumber(formatPhone(target.value))
               }}
