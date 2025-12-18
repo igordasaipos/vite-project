@@ -1,9 +1,6 @@
-export type Mode = 'dineIn' | 'takeAway'
+import { useNavigate } from 'react-router-dom'
 
-type SelectionScreenProps = {
-  onBack: () => void
-  onSelect: (mode: Mode) => void
-}
+export type Mode = 'dineIn' | 'takeAway'
 
 const DineInIcon = () => (
   <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
@@ -47,11 +44,21 @@ const TakeAwayIcon = () => (
   </svg>
 )
 
-const SelectionScreen = ({ onBack, onSelect }: SelectionScreenProps) => {
+const SelectionScreen = () => {
+  const navigate = useNavigate()
+
+  const handleBack = () => {
+    navigate('/')
+  }
+
+  const handleSelect = (mode: Mode) => {
+    navigate('/menu', { state: { mode } })
+  }
+
   return (
     <div className="selection-screen">
       <header className="selection-header">
-        <md-filled-tonal-button className="back-btn" aria-label="Voltar" onClick={onBack}>
+        <md-filled-tonal-button className="back-btn" aria-label="Voltar" onClick={handleBack}>
           ← Voltar
         </md-filled-tonal-button>
       </header>
@@ -64,7 +71,7 @@ const SelectionScreen = ({ onBack, onSelect }: SelectionScreenProps) => {
         <div className="card-grid">
           <md-elevated-card
             className="choice-card"
-            onClick={() => onSelect('dineIn')}
+            onClick={() => handleSelect('dineIn')}
           >
             <div className="card-icon">
               <DineInIcon />
@@ -77,7 +84,7 @@ const SelectionScreen = ({ onBack, onSelect }: SelectionScreenProps) => {
 
           <md-elevated-card
             className="choice-card"
-            onClick={() => onSelect('takeAway')}
+            onClick={() => handleSelect('takeAway')}
           >
             <div className="card-icon">
               <TakeAwayIcon />

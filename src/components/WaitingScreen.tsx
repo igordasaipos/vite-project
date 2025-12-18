@@ -1,10 +1,14 @@
-type WaitingScreenProps = {
-  onStart: () => void
-}
+import { useNavigate } from 'react-router-dom'
 
-const WaitingScreen = ({ onStart }: WaitingScreenProps) => {
+const WaitingScreen = () => {
+  const navigate = useNavigate()
+
+  const handleStart = () => {
+    navigate('/selection')
+  }
+
   return (
-    <div className="waiting-screen" onClick={onStart}>
+    <div className="waiting-screen" onClick={handleStart}>
       <img
         className="hero-photo"
         src="https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=1600&q=80"
