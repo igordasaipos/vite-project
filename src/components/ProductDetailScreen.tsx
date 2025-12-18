@@ -36,6 +36,9 @@ const ProductDetailScreen = ({
 }: ProductDetailScreenProps) => {
   const [quantity, setQuantity] = useState(1)
   const [extraQuantities, setExtraQuantities] = useState<Record<string, number>>({})
+  const [observation, setObservation] = useState('')
+  const [isObservationDialogOpen, setIsObservationDialogOpen] = useState(false)
+  const [tempObservation, setTempObservation] = useState('')
 
   const formatPrice = (price: number) => {
     return `R$ ${price.toFixed(2).replace('.', ',')}`
@@ -85,6 +88,21 @@ const ProductDetailScreen = ({
       }))
 
     onAddToCart(product, quantity, selectedExtras)
+  }
+
+  const openObservationDialog = () => {
+    setTempObservation(observation)
+    setIsObservationDialogOpen(true)
+  }
+
+  const closeObservationDialog = () => {
+    setIsObservationDialogOpen(false)
+    setTempObservation('')
+  }
+
+  const saveObservation = () => {
+    setObservation(tempObservation)
+    setIsObservationDialogOpen(false)
   }
 
   return (
@@ -157,6 +175,35 @@ const ProductDetailScreen = ({
             <h1>{product.title}</h1>
             <p className="product-description">{product.description}</p>
             <span className="product-price">{formatPrice(product.price)}</span>
+
+            {/* Adicionais selecionados */}
+            {Object.keys(extraQuantities).some(id => extraQuantities[id] > 0) && (
+              <div className="selected-extras">
+                <div className="extras-tags">
+                  {extras
+                    .filter(extra => (extraQuantities[extra.id] || 0) > 0)
+                    .map(extra => (
+                      <span key={extra.id} className="extra-tag">
+                        {extraQuantities[extra.id]}x {extra.name}
+                      </span>
+                    ))}
+                </div>
+              </div>
+            )}
+
+            {/* Observação */}
+            <div className="observation-section">
+              <button
+                type="button"
+                className="observation-button"
+                onClick={openObservationDialog}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                <span>{observation || 'Adicionar observação'}</span>
+              </button>
+            </div>
           </div>
 
           <div className="summary-actions">
@@ -185,6 +232,46 @@ const ProductDetailScreen = ({
           </div>
         </div>
       </aside>
+
+      {/* Dialog de observação */}
+      {isObservationDialogOpen && (
+        <div className="observation-dialog-overlay" onClick={closeObservationDialog}>
+          <div className="observation-dialog" onClick={(e) => e.stopPropagation()}>
+            <div className="observation-dialog-header">
+              <h2>Observação</h2>
+              <button
+                type="button"
+                className="dialog-close-btn"
+                onClick={closeObservationDialog}
+                aria-label="Fechar"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+            <div className="observation-dialog-content">
+              <p className="observation-hint">Ex: Tirar alface, sem cebola, ponto da carne ao ponto</p>
+              <textarea
+                className="observation-textarea"
+                placeholder="Digite sua observação..."
+                value={tempObservation}
+                onChange={(e) => setTempObservation(e.target.value)}
+                rows={4}
+                autoFocus
+              />
+            </div>
+            <div className="observation-dialog-actions">
+              <md-filled-tonal-button onClick={closeObservationDialog}>
+                Cancelar
+              </md-filled-tonal-button>
+              <md-filled-button onClick={saveObservation}>
+                Salvar
+              </md-filled-button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
