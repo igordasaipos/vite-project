@@ -28,7 +28,7 @@ const MENU_SECTIONS: MenuSection[] = [
         id: 'hamburger-classico',
         title: 'Hambúrguer Clássico',
         price: 25.90,
-        description: 'Suculento hambúrguer artesanal com carne angus 180g grelhada, queijo cheddar derretido, alface crocante, tomate fresco e nossa exclusiva maionese da casa no macio pão brioche.',
+        description: 'Pão brioche, carne angus 180g, queijo cheddar e maionese especial.',
         image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=400&fit=crop'
       },
       {
