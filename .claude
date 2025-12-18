@@ -1,0 +1,45 @@
+# Especificações do Projeto
+
+## Bibliotecas de Componentes
+
+### Material Web Components (OBRIGATÓRIO)
+- **Biblioteca**: material-web
+- **Repositório**: https://github.com/material-components/material-web
+- **Documentação**: https://github.com/material-components/material-web/blob/main/docs/quick-start.md
+
+### Regras de Implementação
+
+1. **TODOS os componentes UI devem utilizar a biblioteca material-web**
+2. Não utilize outras bibliotecas de componentes (Material-UI, Ant Design, etc.)
+3. Importe os componentes diretamente de `@material/web`
+4. Siga as convenções e padrões da documentação oficial do material-web
+
+### Exemplo de Uso
+
+```typescript
+import '@material/web/button/filled-button.js';
+import '@material/web/button/outlined-button.js';
+import '@material/web/textfield/filled-text-field.js';
+
+// Uso em JSX/TSX
+<md-filled-button>Click me</md-filled-button>
+<md-outlined-button>Cancel</md-outlined-button>
+<md-filled-text-field label="Enter text"></md-filled-text-field>
+```
+
+### Componentes Disponíveis
+- Buttons (filled, outlined, text, tonal)
+- Text fields (filled, outlined)
+- Checkbox, Radio, Switch
+- Cards, Chips, Dialogs
+- FAB (Floating Action Button)
+- Icons, Icon buttons
+- Lists, Menus
+- Progress indicators
+- Sliders, Tabs
+- E mais...
+
+## Stack do Projeto
+- **Framework**: React + TypeScript
+- **Build Tool**: Vite
+- **Componentes UI**: Material Web Components (@material/web)
