@@ -14,9 +14,22 @@ type Extra = {
   price: number
 }
 
+type CustomizationOption = {
+  id: string
+  label: string
+  value: string
+}
+
+type Customization = {
+  id: string
+  question: string
+  options: CustomizationOption[]
+}
+
 type ProductDetailScreenProps = {
   product: MenuItem
   extras?: Extra[]
+  customizations?: Customization[]
   onBack: () => void
   onAddToCart: (product: MenuItem, quantity: number, selectedExtras: Array<{ extra: Extra; quantity: number }>) => void
 }
@@ -28,20 +41,49 @@ const DEFAULT_EXTRAS: Extra[] = [
   { id: 'extra-ovo', name: 'Ovo', price: 2.00 },
 ]
 
+const DEFAULT_CUSTOMIZATIONS: Customization[] = [
+  {
+    id: 'ponto-carne',
+    question: 'Qual o ponto da carne?',
+    options: [
+      { id: 'mal-passado', label: 'Mal passado', value: 'mal-passado' },
+      { id: 'ao-ponto', label: 'Ao ponto', value: 'ao-ponto' },
+      { id: 'bem-passado', label: 'Bem passado', value: 'bem-passado' },
+    ]
+  },
+  {
+    id: 'tipo-pao',
+    question: 'Qual o pão?',
+    options: [
+      { id: 'brioche', label: 'Brioche', value: 'brioche' },
+      { id: 'cervejinha', label: 'Cervejinha', value: 'cervejinha' },
+    ]
+  }
+]
+
 const ProductDetailScreen = ({
   product,
   extras = DEFAULT_EXTRAS,
+  customizations = DEFAULT_CUSTOMIZATIONS,
   onBack,
   onAddToCart
 }: ProductDetailScreenProps) => {
   const [quantity, setQuantity] = useState(1)
   const [extraQuantities, setExtraQuantities] = useState<Record<string, number>>({})
+  const [selectedCustomizations, setSelectedCustomizations] = useState<Record<string, string>>({})
   const [observation, setObservation] = useState('')
   const [isObservationDialogOpen, setIsObservationDialogOpen] = useState(false)
   const [tempObservation, setTempObservation] = useState('')
 
   const formatPrice = (price: number) => {
     return `R$ ${price.toFixed(2).replace('.', ',')}`
+  }
+
+  const handleCustomizationChange = (customizationId: string, optionId: string) => {
+    setSelectedCustomizations(prev => ({
+      ...prev,
+      [customizationId]: optionId
+    }))
   }
 
   const incrementExtra = (extraId: string) => {
@@ -126,8 +168,60 @@ const ProductDetailScreen = ({
             <p>Escolha os adicionais ideais para deixar o pedido perfeito.</p>
           </div>
 
-          {extras.length > 0 ? (
+          {/* Customizações (seleção única) */}
+          {customizations.length > 0 && (
+            <div className="customizations-section">
+              {customizations.map((customization) => {
+                const isCompleted = !!selectedCustomizations[customization.id]
+                return (
+                  <div key={customization.id} className="customization-group">
+                    <div className="customization-header">
+                      <div className="customization-title-group">
+                        <h2 className="customization-question">{customization.question}</h2>
+                        <p className="customization-description">Escolha 1 opção</p>
+                      </div>
+                      {isCompleted && (
+                        <span className="completion-badge">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+                            <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </span>
+                      )}
+                    </div>
+                    <div className="customization-options">
+                      {customization.options.map((option) => {
+                        const isSelected = selectedCustomizations[customization.id] === option.id
+                        return (
+                          <button
+                            key={option.id}
+                            type="button"
+                            className={`customization-option ${isSelected ? 'selected' : ''}`}
+                            onClick={() => handleCustomizationChange(customization.id, option.id)}
+                          >
+                            {isSelected && (
+                              <span className="option-checkbox">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                                  <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                              </span>
+                            )}
+                            <span className="option-label">{option.label}</span>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+
+          {extras.length > 0 && (
             <div className="extras-section">
+              <div className="customization-title-group">
+                <h2 className="extras-section-title">Adicionais</h2>
+                <p className="customization-description">Opcional</p>
+              </div>
               <div className="extras-list">
                 {extras.map((extra) => {
                   const extraQty = extraQuantities[extra.id] || 0
@@ -142,13 +236,13 @@ const ProductDetailScreen = ({
                           onClick={() => decrementExtra(extra.id)}
                           disabled={extraQty === 0}
                         >
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                             <path d="M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                           </svg>
                         </md-filled-tonal-icon-button>
                         <span className="quantity-display">{extraQty}</span>
                         <md-filled-tonal-icon-button onClick={() => incrementExtra(extra.id)}>
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                             <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                           </svg>
                         </md-filled-tonal-icon-button>
@@ -158,8 +252,6 @@ const ProductDetailScreen = ({
                 })}
               </div>
             </div>
-          ) : (
-            <p className="extras-empty">Não há adicionais disponíveis para este item.</p>
           )}
         </div>
       </section>
