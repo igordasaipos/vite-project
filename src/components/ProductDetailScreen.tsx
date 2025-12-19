@@ -105,8 +105,14 @@ const ProductDetailScreen = ({
     setIsObservationDialogOpen(false)
   }
 
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onBack()
+    }
+  }
+
   return (
-    <div className="product-detail-screen">
+    <div className="product-detail-screen" onClick={handleOverlayClick}>
       <div className="product-detail-content">
         <section className="extras-panel">
         <div className="extras-card">

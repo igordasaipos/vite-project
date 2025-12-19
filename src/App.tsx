@@ -9,6 +9,7 @@ import ProductDetailPage from './pages/ProductDetailPage'
 import CartReviewPage from './pages/CartReviewPage'
 import CheckoutPage from './pages/CheckoutPage'
 import ConfirmationPage from './pages/ConfirmationPage'
+import { StyleGuide } from './components/StyleGuide'
 
 function AppRoutes() {
   useInactivityTimer()
@@ -23,6 +24,7 @@ function AppRoutes() {
         <Route path="/cart" element={<CartReviewPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/confirmation" element={<ConfirmationPage />} />
+        <Route path="/styleguide" element={<StyleGuide />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>

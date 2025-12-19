@@ -1,0 +1,167 @@
+/* ================================
+   DESIGN SYSTEM - Blue Theme
+   Base Color: #5B7FC7 (Primary Blue)
+   ================================ */
+
+:root {
+  /* Primary Colors - Blue Theme */
+  --color-primary: #5B7FC7;
+  --color-primary-light: #7A9BD6;
+  --color-primary-lighter: #A3BFEA;
+  --color-primary-dark: #4A6AAD;
+  --color-primary-darker: #3A5691;
+
+  /* Accent Colors */
+  --color-accent: #E86A5F;
+  --color-accent-light: #F08A81;
+  --color-accent-dark: #D1564C;
+
+  /* Success & Info */
+  --color-success: #4CAF50;
+  --color-info: #5B7FC7;
+  --color-warning: #FF9800;
+
+  /* Neutral Colors */
+  --color-text-primary: #1E2A3A;
+  --color-text-secondary: #4A5C70;
+  --color-text-muted: #7A8A9E;
+  --color-text-disabled: #B0BAC7;
+
+  /* Background Colors */
+  --color-bg-primary: #FFFFFF;
+  --color-bg-secondary: #F8F9FB;
+  --color-bg-tertiary: #EFF2F7;
+  --color-bg-accent: #E8EDF5;
+
+  /* Blue-tinted backgrounds */
+  --color-bg-blue-lightest: #F5F8FC;
+  --color-bg-blue-light: #E8EDF5;
+  --color-bg-blue: #D6E1F0;
+  --color-bg-blue-dark: #C4D5EA;
+
+  /* Interactive States */
+  --color-hover: rgba(91, 127, 199, 0.08);
+  --color-active: rgba(91, 127, 199, 0.16);
+  --color-focus: rgba(91, 127, 199, 0.24);
+  --color-disabled: rgba(91, 127, 199, 0.06);
+
+  /* Borders */
+  --color-border-light: rgba(91, 127, 199, 0.12);
+  --color-border: rgba(91, 127, 199, 0.2);
+  --color-border-strong: rgba(91, 127, 199, 0.4);
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(91, 127, 199, 0.08);
+  --shadow-md: 0 4px 16px rgba(91, 127, 199, 0.12);
+  --shadow-lg: 0 8px 24px rgba(91, 127, 199, 0.16);
+  --shadow-xl: 0 12px 32px rgba(91, 127, 199, 0.2);
+  --shadow-2xl: 0 24px 48px rgba(91, 127, 199, 0.24);
+
+  /* Button Shadows */
+  --shadow-button: 0 4px 12px rgba(91, 127, 199, 0.3);
+  --shadow-button-hover: 0 6px 20px rgba(91, 127, 199, 0.4);
+  --shadow-button-active: 0 2px 8px rgba(91, 127, 199, 0.3);
+
+  /* Border Radius */
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-2xl: 28px;
+  --radius-3xl: 32px;
+  --radius-full: 999px;
+
+  /* Spacing */
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* Typography */
+  --font-family: 'Inter', 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;      /* 16px */
+  --font-size-lg: 1.125rem;    /* 18px */
+  --font-size-xl: 1.25rem;     /* 20px */
+  --font-size-2xl: 1.5rem;     /* 24px */
+  --font-size-3xl: 1.875rem;   /* 30px */
+  --font-size-4xl: 2.25rem;    /* 36px */
+  --font-size-5xl: 3rem;       /* 48px */
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Z-index layers */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+}
+
+/* ================================
+   Gradients
+   ================================ */
+
+.gradient-primary {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+}
+
+.gradient-accent {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+}
+
+.gradient-subtle {
+  background: linear-gradient(135deg, var(--color-bg-blue-lightest) 0%, var(--color-bg-blue-light) 100%);
+}
+
+.gradient-card {
+  background: linear-gradient(135deg, rgba(91, 127, 199, 0.08), rgba(232, 106, 95, 0.08));
+}
+
+.gradient-fade-bottom {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), var(--color-bg-secondary) 60%);
+}
+
+/* ================================
+   Utility Classes
+   ================================ */
+
+.text-primary { color: var(--color-primary); }
+.text-accent { color: var(--color-accent); }
+.text-muted { color: var(--color-text-muted); }
+.text-secondary { color: var(--color-text-secondary); }
+
+.bg-primary { background-color: var(--color-primary); }
+.bg-accent { background-color: var(--color-accent); }
+.bg-secondary { background-color: var(--color-bg-secondary); }
+.bg-tertiary { background-color: var(--color-bg-tertiary); }
+
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-xl { box-shadow: var(--shadow-xl); }
+
+.rounded-sm { border-radius: var(--radius-sm); }
+.rounded-md { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.rounded-xl { border-radius: var(--radius-xl); }
+.rounded-2xl { border-radius: var(--radius-2xl); }
+.rounded-3xl { border-radius: var(--radius-3xl); }
+.rounded-full { border-radius: var(--radius-full); }
